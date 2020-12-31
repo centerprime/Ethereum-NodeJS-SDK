@@ -23,7 +23,15 @@ v8.16.0
   - [API](#api)
     - [Create Wallet](#createwallet)
       - [Options](#options)
-    - [fetchData](#fetchdata)
+    - [Import Wallet](#importwallet)
+      - [Keystore](#keystore)
+      - [Private Key](#keystore)
+    - [Balance](#balance)
+      - [Ether Balance](#etherbalance)
+      - [ERC20 Token Balance](#erc20tokenbalance)
+    - [Send](#send)
+      - [Send Ether](#sendether)
+      - [Send ERC20 Token](#senderc20token)
 
 ## Getting Started
 
