@@ -21,7 +21,7 @@ v8.16.0
   - [Getting Started](#getting-started)
   - [Installation](#installation)
   - [API](#api)
-    - [useBasicFetch](#usebasicfetch)
+    - [Create Wallet](#createwallet)
       - [Options](#options)
     - [fetchData](#fetchdata)
 
@@ -36,8 +36,7 @@ These instructions will get you a copy of the project up and running on your loc
 Start with cloning this repo on your local machine:
 
 ```sh
-$ git clone https://github.com/ORG/PROJECT.git
-$ cd PROJECT
+$ git clone https://github.com/centerprime/Node-Ethereum-SDK.git
 ```
 
 To install and set up the library, run:
@@ -48,131 +47,55 @@ $ npm install node-ethereum-sdk
 
 ## API
 
-### useBasicFetch
+### Create Wallet
 
 ```js
-useBasicFetch(url: string = '', delay: number = 0)
+import EthManager from "../src/centerprime.js";
+
+var ethManager = new EthManager("Infura Url");
+ethManager.createAccount("12345");
 ```
 
-Supported options and result fields for the `useBasicFetch` hook are listed below.
 
-#### Options
-
-`url`
-
-| Type | Default value |
-| --- | --- |
-| string | '' |
-
-If present, the request will be performed as soon as the component is mounted
-
-Example:
-
-```tsx
-const MyComponent: React.FC = () => {
-  const { data, error, loading } = useBasicFetch('https://api.icndb.com/jokes/random');
-
-  if (error) {
-    return <p>Error</p>;
-  }
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  return (
-    <div className="App">
-      <h2>Chuck Norris Joke of the day</h2>
-      {data && data.value && <p>{data.value.joke}</p>}
-    </div>
-  );
-};
-```
-
-`delay`
-
-| Type | Default value | Description |
-| --- | --- | --- |
-| number | 0 | Time in milliseconds |
-
-If present, the request will be delayed by the given amount of time
-
-Example:
-
-```tsx
-type Joke = {
-  value: {
-    id: number;
-    joke: string;
-  };
-};
-
-const MyComponent: React.FC = () => {
-  const { data, error, loading } = useBasicFetch<Joke>('https://api.icndb.com/jokes/random', 2000);
-
-  if (error) {
-    return <p>Error</p>;
-  }
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  return (
-    <div className="App">
-      <h2>Chuck Norris Joke of the day</h2>
-      {data && data.value && <p>{data.value.joke}</p>}
-    </div>
-  );
-};
-```
-
-### fetchData
+### Import Wallet by Keystore
 
 ```js
-fetchData(url: string)
+import EthManager from "../src/centerprime.js";
+
+var ethManager = new EthManager("Infura Url");
+let keystore = {};
+let password = '';
+ethManager.importWalletByKeystore(keystore,password);
 ```
 
-Perform an asynchronous http request against a given url
+### Import Wallet by Private key
 
-```tsx
-type Joke = {
-  value: {
-    id: number;
-    joke: string;
-  };
-};
+```js
+import EthManager from "../src/centerprimeSDK.js";
 
-const ChuckNorrisJokes: React.FC = () => {
-  const { data, fetchData, error, loading } = useBasicFetch<Joke>();
-  const [jokeId, setJokeId] = useState(1);
+var ethManager = new EthManager("Infura Url");
+let privateKey = '';
+ethManager.importWalletByPrivateKey(privateKey);
+```
 
-  useEffect(() => {
-    fetchData(`https://api.icndb.com/jokes/${jokeId}`);
-  }, [jokeId, fetchData]);
+### Get Ether balance
 
-  const handleNext = () => setJokeId(jokeId + 1);
+```js
+import EthManager from "../src/centerprimeSDK.js";
 
-  if (error) {
-    return <p>Error</p>;
-  }
+var ethManager = new EthManager("Infura Url");
+let address = '';
+ethManager.getEtherBalance(address);
+```
 
-  const jokeData = data && data.value;
 
-  return (
-    <div className="Comments">
-      {loading && <p>Loading...</p>}
-      {!loading && jokeData && (
-        <div>
-          <p>Joke ID: {jokeData.id}</p>
-          <p>{jokeData.joke}</p>
-        </div>
-      )}
-      {!loading && jokeData && !jokeData.joke && <p>{jokeData}</p>}
-      <button disabled={loading} onClick={handleNext}>
-        Next Joke
-      </button>
-    </div>
-  );
-};
+### Get ERC20 token balance
+
+```js
+import EthManager from "../src/centerprimeSDK.js";
+
+var ethManager = new EthManager("Infura Url");
+let tokenContractAddress = '';
+let address = '';
+ethManager.getERCTokenBalance(tokenContractAddress, address);
 ```
