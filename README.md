@@ -21,7 +21,7 @@ v8.16.0
   - [Getting Started](#getting-started)
   - [Installation](#installation)
   - [API](#api)
-    - [Create Wallet](#createwallet)
+    - [Create Wallet](#create wallet)
     - [Import Wallet](#importwallet)
       - [Keystore](#keystore)
       - [Private Key](#keystore)
