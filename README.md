@@ -43,49 +43,8 @@ $ cd PROJECT
 To install and set up the library, run:
 
 ```sh
-$ npm install -S myLib
+$ npm install node-ethereum-sdk
 ```
-
-Or if you prefer using Yarn:
-
-```sh
-$ yarn add --dev myLib
-```
-
-## Usage
-
-### Serving the app
-
-```sh
-$ npm start
-```
-
-### Running the tests
-
-```sh
-$ npm test
-```
-
-### Building a distribution version
-
-```sh
-$ npm run build
-```
-
-This task will create a distribution version of the project
-inside your local `dist/` folder
-
-### Serving the distribution version
-
-```sh
-$ npm run serve:dist
-```
-
-This will use `lite-server` for servign your already
-generated distribution version of the project.
-
-*Note* this requires
-[Building a distribution version](#building-a-distribution-version) first.
 
 ## API
 
@@ -217,39 +176,3 @@ const ChuckNorrisJokes: React.FC = () => {
   );
 };
 ```
-
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-1.  Fork it!
-2.  Create your feature branch: `git checkout -b my-new-feature`
-3.  Add your changes: `git add .`
-4.  Commit your changes: `git commit -am 'Add some feature'`
-5.  Push to the branch: `git push origin my-new-feature`
-6.  Submit a pull request :sunglasses:
-
-## Credits
-
-TODO: Write credits
-
-## Built With
-
-* Dropwizard - Bla bla bla
-* Maven - Maybe
-* Atom - ergaerga
-* Love
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
-
-## Authors
-
-* **John Doe** - *Initial work* - [JohnDoe](https://github.com/JohnDoe)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-[MIT License](https://andreasonny.mit-license.org/2019) © Andrea SonnY
