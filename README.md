@@ -1,4 +1,4 @@
-# Center Prime Node Ethereum SDK
+# Ethereum NodeJS SDK
 
 ## Prerequisites
 
