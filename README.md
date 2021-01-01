@@ -121,3 +121,39 @@ ethManager.getERCTokenBalance(tokenContractAddress, address)
             console.log(res);
         });
 ```
+
+### Send ERC20 token
+
+```js
+import EthManager from "../src/centerprimeSDK.js";
+
+var ethManager = new EthManager("Infura Url");
+let keystore = {};
+let password = '';
+let tokenContractAddress = '';
+let toAddress = '';
+let amount = '';
+let chainId = ''; // 1 : Mainnet 3 : Ropsten
+ethManager.sendToken(keystore, password, tokenContractAddress , toAddress , amount , chainId)
+  .then(res => {
+            console.log(res);
+        });
+```
+
+
+### Send Ether token
+
+```js
+import EthManager from "../src/centerprimeSDK.js";
+
+var ethManager = new EthManager("Infura Url");
+let keystore = {};
+let password = '';
+let toAddress = '';
+let amount = '';
+let chainId = ''; // 1 : Mainnet 3 : Ropsten
+ethManager.sendEther(keystore, password , toAddress , amount , chainId)
+  .then(res => {
+            console.log(res);
+        });
+```
