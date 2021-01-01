@@ -141,7 +141,7 @@ ethManager.sendToken(keystore, password, tokenContractAddress , toAddress , amou
 ```
 
 
-### Send Ether token
+### Send Ether
 
 ```js
 import EthManager from "../src/centerprimeSDK.js";
