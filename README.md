@@ -60,7 +60,10 @@ $ npm install node-ethereum-sdk
 import EthManager from "../src/centerprime.js";
 
 var ethManager = new EthManager("Infura Url");
-ethManager.createAccount("12345");
+ethManager.createAccount("12345")
+  .then(res => {
+     console.log(res);
+  });
 ```
 
 
@@ -72,7 +75,10 @@ import EthManager from "../src/centerprime.js";
 var ethManager = new EthManager("Infura Url");
 let keystore = {};
 let password = '';
-ethManager.importWalletByKeystore(keystore,password);
+ethManager.importWalletByKeystore(keystore,password)
+  .then(res => {
+      console.log(res);
+    });
 ```
 
 ### Import Wallet by Private key
@@ -82,7 +88,10 @@ import EthManager from "../src/centerprimeSDK.js";
 
 var ethManager = new EthManager("Infura Url");
 let privateKey = '';
-ethManager.importWalletByPrivateKey(privateKey);
+ethManager.importWalletByPrivateKey(privateKey)
+  .then(res => {
+        console.log(res);
+      });
 ```
 
 ### Get Ether balance
@@ -92,7 +101,10 @@ import EthManager from "../src/centerprimeSDK.js";
 
 var ethManager = new EthManager("Infura Url");
 let address = '';
-ethManager.getEtherBalance(address);
+ethManager.getEtherBalance(address)
+  .then(res => {
+          console.log(res);
+        });
 ```
 
 
@@ -104,5 +116,8 @@ import EthManager from "../src/centerprimeSDK.js";
 var ethManager = new EthManager("Infura Url");
 let tokenContractAddress = '';
 let address = '';
-ethManager.getERCTokenBalance(tokenContractAddress, address);
+ethManager.getERCTokenBalance(tokenContractAddress, address)
+  .then(res => {
+            console.log(res);
+        });
 ```
