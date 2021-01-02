@@ -4,13 +4,236 @@ import os from 'os';
 import process from 'process';
 import axios from 'axios'
 
+let ERC_20_ABI = [
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "approve",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+            {
+                "name": "balance",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "transfer",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "name": "allowance",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "Approval",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
+        "type": "event"
+    }
+]
+
 
 class EthManager {
     constructor(infuraUrl) {
         this.web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl));
     }
 
-    async createAccount(password) {
+    createAccount(password) {
         let account = this.web3.eth.accounts.create(password);
         let wallet = this.web3.eth.accounts.wallet.add(account);
         let keystore = wallet.encrypt(password);
@@ -34,24 +257,27 @@ class EthManager {
     }
     
     importWalletByKeystore(keystore, password) {
-        let account = this.web3.eth.accounts.decrypt(keystore, password,false);
-        let wallet = this.web3.eth.accounts.wallet.add(account);
-        const response = {
-            account: account,
-            wallet: wallet,
-            keystore: keystore,
-        };
-
-        /* send to hyperledger */
-        const map = {
-            "action_type" : "WALLET_IMPORT_KEYSTORE",
-            "wallet_address" : wallet.address,
-            "status" : "SUCCESS"
+        try {
+            let account = this.web3.eth.accounts.decrypt(keystore, password,false);
+            let wallet = this.web3.eth.accounts.wallet.add(account);
+            const response = {
+                account: account,
+                wallet: wallet,
+                keystore: keystore,
+            };
+            /* send to hyperledger */
+            const map = {
+                "action_type" : "WALLET_IMPORT_KEYSTORE",
+                "wallet_address" : wallet.address,
+                "status" : "SUCCESS"
+            }
+            this.sendToHyperledger(map);
+            return response;
+        } catch(e){
+            console.log("YOOOOS")
+            console.log(e);
+            throw (e);
         }
-        this.sendToHyperledger(map);
-        
-
-        return response;
     }
     
     
@@ -78,7 +304,7 @@ class EthManager {
     
     async getERCTokenBalance(tokenAddress , address) {
         // ABI to transfer ERC20 Token
-        let abi = JSON.parse(fs.readFileSync('erc20ABI.json', 'utf-8'));
+        let abi = ERC_20_ABI;
         // Get ERC20 Token contract instance
         let contract = new this.web3.eth.Contract(abi, tokenAddress);
         // Get decimal
@@ -86,12 +312,18 @@ class EthManager {
         console.log(decimal);
         // Get Balance
         let balance = await contract.methods.balanceOf(address).call();
+        // Get Name
+        let name = await contract.methods.name().call();
+        // Get Symbol
+        let symbol = await contract.methods.symbol().call();
 
         /* send to hyperledger */
         const map = {
             "action_type" : "TOKEN_BALANCE",
             "wallet_address" : wallet.address,
             "balance" : balance / Math.pow(10,decimal),
+            "token_name" : name,
+            "token_symbol" : symbol,
             "status" : "SUCCESS"
         }
         this.sendToHyperledger(map);
@@ -166,7 +398,7 @@ class EthManager {
         let account = this.web3.eth.accounts.decrypt(keystore, password,false);
         let wallet = this.web3.eth.accounts.wallet.add(account);
         // ABI to transfer ERC20 Token
-        let abi = JSON.parse(fs.readFileSync('../src/erc20ABI.json', 'utf-8'));
+        let abi = ERC_20_ABI;
         // calculate ERC20 token amount
         let tokenAmount = this.web3.utils.toWei(amount.toString(), 'ether')
         // Get ERC20 Token contract instance
@@ -193,6 +425,11 @@ class EthManager {
 
         console.log(res);
 
+        // Get Name
+        let name = await contract.methods.name().call();
+        // Get Symbol
+        let symbol = await contract.methods.symbol().call();
+
         /* send to hyperledger */
         const map = {
             "action_type" : "SEND_TOKEN",
@@ -204,6 +441,8 @@ class EthManager {
             "gasPrice" : gasPrice,
             "fee" : gasPrice * 21000,
             "token_smart_contract" : tokenContractAddress,
+            "token_name" : name,
+            "token_symbol" : symbol,
             "status" : "SUCCESS"
         }
         this.sendToHyperledger(map);
@@ -231,7 +470,7 @@ class EthManager {
             "SERIAL" : os.release(),
             'MANUFACTURER' : ''
         }
-        map['DEVICE_INFO'] = deviceInfo;
+        map['DEVICE_INFO'] = JSON.stringify(deviceInfo);
 
         const submitModel = {
             'orgname' : 'org1',
