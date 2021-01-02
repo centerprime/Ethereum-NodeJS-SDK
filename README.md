@@ -170,7 +170,7 @@ First run backend
    npm start
 ```
 
-Second run frontend '/frontend/ 
+Second run frontend /frontend/ 
 
 ```js
    npm install
