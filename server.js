@@ -52,7 +52,6 @@ app.post('/api/tokenBalance', async function(req,res) {
     const address = req.body.address;
     const tokenContractAddress = req.body.tokenAddress;
     let balance = await ethManager.getERCTokenBalance(tokenContractAddress,address)
-    console.log(balance);
     res.json(balance);
   } catch(e) {
      return res.status(401).send({

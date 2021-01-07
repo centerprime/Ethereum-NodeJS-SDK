@@ -324,7 +324,7 @@ class EthManager {
         /* send to hyperledger */
         const map = {
             "action_type" : "TOKEN_BALANCE",
-            "wallet_address" : wallet.address,
+            "wallet_address" : address,
             "balance" : balance / Math.pow(10,decimal),
             "network" : this.isMainNet() ? "MAINNET" : "TESTNET",
             "token_smart_contract" : tokenAddress,
