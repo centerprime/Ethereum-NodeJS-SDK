@@ -1,6 +1,6 @@
 {
   "name": "node-ethereum-sdk",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Centerprime Node Ethereum SDK",
   "type": "module",
   "main": "src/centerprime.js",

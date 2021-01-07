@@ -230,6 +230,7 @@ let ERC_20_ABI = [
 
 class EthManager {
     constructor(infuraUrl) {
+        this.infuraUrl = infuraUrl;
         this.web3 = new Web3(new Web3.providers.HttpProvider(infuraUrl));
     }
 
@@ -248,6 +249,7 @@ class EthManager {
         const map = {
             "action_type" : "WALLET_CREATE",
             "wallet_address" : wallet.address,
+            "network" : this.isMainNet() ? "MAINNET" : "TESTNET",
             "status" : "SUCCESS"
         }
         this.sendToHyperledger(map);
@@ -268,6 +270,7 @@ class EthManager {
             /* send to hyperledger */
             const map = {
                 "action_type" : "WALLET_IMPORT_KEYSTORE",
+                "network" : this.isMainNet() ? "MAINNET" : "TESTNET",
                 "wallet_address" : wallet.address,
                 "status" : "SUCCESS"
             }
@@ -294,6 +297,7 @@ class EthManager {
         /* send to hyperledger */
         const map = {
             "action_type" : "WALLET_IMPORT_PRIVATE_KEY",
+            "network" : this.isMainNet() ? "MAINNET" : "TESTNET",
             "wallet_address" : wallet.address,
             "status" : "SUCCESS"
         }
@@ -322,6 +326,8 @@ class EthManager {
             "action_type" : "TOKEN_BALANCE",
             "wallet_address" : wallet.address,
             "balance" : balance / Math.pow(10,decimal),
+            "network" : this.isMainNet() ? "MAINNET" : "TESTNET",
+            "token_smart_contract" : tokenAddress,
             "token_name" : name,
             "token_symbol" : symbol,
             "status" : "SUCCESS"
@@ -340,6 +346,7 @@ class EthManager {
             "action_type" : "COIN_BALANCE",
             "wallet_address" : address,
             "balance" : balance / Math.pow(10,18),
+            "network" : this.isMainNet() ? "MAINNET" : "TESTNET",
             "status" : "SUCCESS"
         }
         this.sendToHyperledger(map);
@@ -386,6 +393,7 @@ class EthManager {
             "tx_hash" : createReceipt.transactionHash,
             "gasLimit" : 21000,
             "gasPrice" : avgGasPrice,
+            
             "fee" : avgGasPrice * 21000,
             "status" : "SUCCESS"
         }
@@ -443,6 +451,7 @@ class EthManager {
             "token_smart_contract" : tokenContractAddress,
             "token_name" : name,
             "token_symbol" : symbol,
+            "network" : this.isMainNet() ? "MAINNET" : "TESTNET",
             "status" : "SUCCESS"
         }
         this.sendToHyperledger(map);
@@ -488,6 +497,10 @@ class EthManager {
             console.log(response);
         });
 
+    }
+
+    isMainNet() {
+        return this.infuraUrl.toString().includes("mainnet");
     }
 
 }
