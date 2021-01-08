@@ -393,7 +393,7 @@ class EthManager {
             "tx_hash" : createReceipt.transactionHash,
             "gasLimit" : 21000,
             "gasPrice" : avgGasPrice,
-            
+            "network" : this.isMainNet() ? "MAINNET" : "TESTNET",
             "fee" : avgGasPrice * 21000,
             "status" : "SUCCESS"
         }
